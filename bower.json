@@ -1,0 +1,27 @@
+{
+  "name": "mithril-starter",
+  "version": "1.0.0",
+  "authors": [
+    "Stephen James"
+  ],
+  "description": "A Mithril starter kit with plumbing",
+  "main": "src/app/index.js",
+  "moduleType": [
+    "es6"
+  ],
+  "keywords": [
+    "mithril",
+    "gulp"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "mithril": "~0.2.3"
+  }
+}
