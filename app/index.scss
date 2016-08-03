@@ -1,5 +1,7 @@
-$yellow: #ffff00;
+$background-color: #fff;
 
 html, body {
-  background-color: $yellow;
+  background-color: $background-color;
+  height: 100%;
+  width: 100%;
 }

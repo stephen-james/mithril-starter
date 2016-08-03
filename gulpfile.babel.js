@@ -13,11 +13,13 @@ import commonjs from 'rollup-plugin-commonjs';
 import uglify from 'rollup-plugin-uglify';
 import runSequence from 'run-sequence';
 import map from 'map-stream';
+import browserSync from 'browser-sync';
 
 import common from './gulp/common';
 import build from './gulp/build';
 
 const $ = gulpLoadPlugins();
+const reload = browserSync.reload;
 
 var config = {
     bundle: 'scripts/app.js',
@@ -94,10 +96,6 @@ gulp.task('styles', () => {
 // Scan your HTML for assets & optimize them
 gulp.task('html', () => {
     return gulp.src('app/**/*.html')
-        .pipe($.useref({
-            searchPath: '{.tmp,app}',
-            noAssets: true
-        }))
         // Minify any HTML
         .pipe($.if('*.html', $.htmlmin({
             removeComments: true,
@@ -111,7 +109,10 @@ gulp.task('html', () => {
             removeOptionalTags: true
         })))
         // Output files
-        .pipe($.if('*.html', $.size({ title: 'html', showFiles: true })))
+        .pipe($.if('*.html', $.size({
+            title: 'html',
+            showFiles: true
+        })))
         .pipe(gulp.dest('dist'));
 });
 
@@ -143,8 +144,18 @@ gulp.task('scripts', () => {
     });
 });
 
+// Build and serve the output from the dist build
+gulp.task('serve', ['default'], () => {
+    browserSync({
+        server: 'dist',
+        port: 3001
+    });
 
-gulp.task('serve', ['scripts', 'html']);
+    gulp.watch(['app/**/*.html'], reload);
+    gulp.watch(['app/**/*.{scss,css}'], ['styles', reload]);
+    gulp.watch(['app/**/*.js'], ['scripts', reload]);
+    gulp.watch(['app/**/*.{gif,jpg,png}'], reload);
+});
 
 
 function errHandler(title) {
